@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nexgen Tech – Innovative Tech Solutions</title>
+  <meta name="description" content="Nexgen Tech – Cutting-edge technology solutions in Kenya"/>
+  
+  <!-- =============== SUPABASE CLIENT =============== -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root {
+      --primary: #0066cc;
+      --primary-dark: #004c99;
+      --dark: #1a1a1a;
+      --gray: #333;
+      --light: #f8f9fa;
+      --white: #ffffff;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: var(--light);
+    }
+
+    /* ================= HEADER / NAV ================= */
+    header {
+      background: var(--dark);
+      color: white;
+      padding: 1rem 5%;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .logo {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--primary);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary);
+    }
+
+    /* ================= HERO ================= */
+    #hero {
+      background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+                  url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=1974');
+      background-size: cover;
+      background-position: center;
+      color: white;
+      text-align: center;
+      padding: 12rem 5% 8rem;
+    }
+
+    #hero h1 {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+    }
+
+    #hero p {
+      font-size: 1.4rem;
+      max-width: 700px;
+      margin: 0 auto 2.5rem;
+      opacity: 0.95;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.9rem 2.2rem;
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary);
+      margin-left: 1rem;
+    }
+
+    .btn-outline:hover {
+      background: var(--primary);
+    }
+
+    /* ================= SECTIONS ================= */
+    section {
+      padding: 6rem 5%;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    h2 {
+      text-align: center;
+      font-size: 2.6rem;
+      margin-bottom: 3rem;
+      color: var(--dark);
+    }
+
+    /* Services grid */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .service-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .service-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+    }
+
+    .service-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .service-content {
+      padding: 1.8rem;
+    }
+
+    .service-content h3 {
+      margin-bottom: 1rem;
+      color: var(--primary);
+    }
+
+    /* Products from Supabase */
+    #products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+    }
+
+    .product-info {
+      padding: 1.5rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .product-info h3 {
+      margin-bottom: 0.8rem;
+    }
+
+    .price {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: var(--primary);
+      margin: 0.8rem 0;
+    }
+
+    /* ================= FOOTER ================= */
+    footer {
+      background: var(--dark);
+      color: white;
+      padding: 3rem 5% 2rem;
+      text-align: center;
+    }
+
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    /* Mobile menu (hamburger) */
+    .menu-toggle {
+      display: none;
+      font-size: 1.8rem;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--dark);
+        padding: 1.5rem 5%;
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+
+      #hero h1 {
+        font-size: 2.6rem;
+      }
+
+      #hero p {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ================= HEADER ================= -->
+  <header>
+    <nav>
+      <div class="logo">Nexgen Tech</div>
+      
+      <button class="menu-toggle" id="menuToggle">☰</button>
+
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#hero">Home</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#products">Products</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- ================= HERO ================= -->
+  <section id="hero">
+    <h1>Innovative Technology Solutions</h1>
+    <p>We build modern web & mobile applications, provide IT consulting and deliver reliable tech solutions across Kenya.</p>
+    <div>
+      <a href="#contact" class="btn">Get in Touch</a>
+      <a href="#products" class="btn btn-outline">View Products</a>
+    </div>
+  </section>
+
+  <!-- ================= SERVICES ================= -->
+  <section id="services">
+    <h2>Our Services</h2>
+    <div class="services-grid">
+      <div class="service-card">
+        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800" alt="Web Development">
+        <div class="service-content">
+          <h3>Web Development</h3>
+          <p>Custom websites & web applications built with modern technologies.</p>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <img src="https://images.unsplash.com/photo-1551650975-60cb6b7b3ff6?auto=format&fit=crop&q=80&w=800" alt="Mobile Apps">
+        <div class="service-content">
+          <h3>Mobile Applications</h3>
+          <p>iOS & Android apps tailored to your business needs.</p>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <img src="https://images.unsplash.com/photo-1551288049-b1f7c5e8c0d9?auto=format&fit=crop&q=80&w=800" alt="Cloud Solutions">
+        <div class="service-content">
+          <h3>Cloud & DevOps</h3>
+          <p>Cloud infrastructure setup, CI/CD pipelines, server management.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PRODUCTS (from Supabase) ================= -->
+  <section id="products">
+    <h2>Featured Products</h2>
+    
+    <div id="products-grid">
+      <!-- Products will be loaded here by JavaScript -->
+      <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+        <p>Loading products...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONTACT ================= -->
+  <section id="contact" style="background: #0d1b2a; color: white;">
+    <h2 style="color: white;">Get In Touch</h2>
+    <p style="text-align: center; max-width: 600px; margin: 0 auto 3rem;">
+      Ready to start your next project? Let's talk!
+    </p>
+    <div style="text-align: center;">
+      <p>Email: <a href="mailto:info@nexgen-tech.co.ke" style="color: var(--primary);">info@nexgen-tech.co.ke</a></p>
+      <p>Phone: +254 700 000 000</p>
+      <p>Location: Nairobi, Kenya</p>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer>
+    <p>&copy; 2026 Nexgen Tech. All rights reserved.</p>
+    <p><a href="#">Privacy Policy</a> • <a href="#">Terms of Service</a></p>
+  </footer>
+
+  <!-- ================= JAVASCRIPT ================= -->
+<script>
+  // Mobile menu toggle
+  const menuToggle = document.getElementById('menuToggle');
+  const navLinks = document.getElementById('navLinks');
+
+  menuToggle.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+  });
+
+  // ================= Supabase - CORRECT WAY 2026 =================
+  // Make sure these two values are YOUR real ones!
+  const SUPABASE_URL    = 'https://ewgyxcyllfxgucwsyqhz.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV3Z3l4Y3lsbGZ4Z3Vjd3N5cWh6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjgwNTc0MjMsImV4cCI6MjA4MzYzMzQyM30.qxh2lw68Da9uERwMloMEvy3l2UQRguCdGSVQk6hGbuk';
+
+  // The CDN already creates a global 'supabase' object
+  const { createClient } = supabase;   // ← this is the correct modern syntax
+
+  const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // ================= Load products =================
+  async function loadProducts() {
+    const productsGrid = document.getElementById('products-grid');
+    
+    // Show loading
+    productsGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; padding: 3rem;">Loading products...</p>';
+
+    try {
+      const { data, error } = await supabaseClient
+        .from('products')
+        .select('*')
+        .order('id', { ascending: true });
+
+      if (error) {
+        throw error;
+      }
+
+      if (!data || data.length === 0) {
+        productsGrid.innerHTML = '<p style="grid-column: 1 / -1; text-align: center; padding: 3rem;">No products found in database.</p>';
+        return;
+      }
+
+      productsGrid.innerHTML = ''; // clear
+
+      data.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+
+        const imgTag = product.image_url 
+          ? `<img src="${product.image_url}" alt="${product.name}" onerror="this.src='https://via.placeholder.com/280x220?text=No+Image'">`
+          : '<div style="height:220px;background:#eee;display:flex;align-items:center;justify-content:center;">No image</div>';
+
+        card.innerHTML = `
+          ${imgTag}
+          <div class="product-info">
+            <h3>${product.name}</h3>
+            ${product.description ? `<p>${product.description}</p>` : ''}
+            <div class="price">KSh ${Number(product.price).toLocaleString()}</div>
+          </div>
+        `;
+
+        productsGrid.appendChild(card);
+      });
+    } catch (err) {
+      console.error('Supabase error:', err);
+      productsGrid.innerHTML = `
+        <p style="grid-column: 1 / -1; text-align: center; color: red; padding: 3rem;">
+          Failed to load products.<br>
+          Error: ${err.message || 'Check console (F12)'}<br>
+          Make sure table 'products' exists and anon key is correct.
+        </p>`;
+    }
+  }
+
+  // Run when page is ready
+  document.addEventListener('DOMContentLoaded', loadProducts);
+</script>
